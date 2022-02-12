@@ -9,7 +9,7 @@ public class Receipt {
 	String totalAsString;
 	String branch;
 	int receiptType;
-    String fullReceipt;
+	String fullReceipt;
 	
 	final int ITEM_FIRST_BRANCH = 0;
 	final int PRICE_FIRST_BRANCH = 1;
@@ -24,16 +24,16 @@ public class Receipt {
 		else {
 			this.receiptType = this.PRICE_FIRST_BRANCH;
 		}
-        this.fullReceipt="";
+		this.fullReceipt="";
 	}
 	
 	public void printAndSaveReceipt(ArrayList<Entry> cartContents) {
 		this.entries = cartContents;
-        StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		if(this.receiptType == this.ITEM_FIRST_BRANCH) {
 			for(Entry e:this.entries) {
 				System.out.println(e.item + " - " + e.quantity + " - " + e.priceString);
-                builder.append(e.item + " - " + e.quantity + " - " + e.priceString + "\n");
+				builder.append(e.item + " - " + e.quantity + " - " + e.priceString + "\n");
 				this.total+=e.price;
 			}
 		}
@@ -41,15 +41,14 @@ public class Receipt {
 		else {
 			for(Entry e:this.entries) {
 				System.out.println(e.priceString + " - " + e.quantity + " - " + e.item);
-                builder.append(e.priceString + " - " + e.quantity + " - " + e.item + "\n");
+				builder.append(e.priceString + " - " + e.quantity + " - " + e.item + "\n");
 				this.total+=e.price;
 			}
 		}
 
 		this.totalAsString = String.format("€%.2f", this.total);
 		System.out.format("%nTotal: " + this.totalAsString);
-
-        builder.append("\nTotal: " + this.totalAsString);
-        this.fullReceipt = builder.toString();
+		builder.append("\nTotal: " + this.totalAsString);
+		this.fullReceipt = builder.toString();
 	}
 }
