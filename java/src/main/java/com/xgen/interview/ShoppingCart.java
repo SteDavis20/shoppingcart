@@ -1,39 +1,27 @@
 package com.xgen.interview;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
-
-/**
- * This is the current implementation of ShoppingCart.
- * Please write a replacement
- */
 public class ShoppingCart implements IShoppingCart {
-    HashMap<String, Integer> contents = new HashMap<>();
-    Pricer pricer;
 
-    public ShoppingCart(Pricer pricer) {
-        this.pricer = pricer;
-    }
+	ArrayList<Entry> cartContents = new ArrayList<Entry>();
+	Pricer pricer;
+	Receipt receipt;
 
-    public void addItem(String itemType, int number) {
-        if (!contents.containsKey(itemType)) {
-            contents.put(itemType, number);
-        } else {
-            int existing = contents.get(itemType);
-            contents.put(itemType, existing + number);
-        }
-    }
+	public ShoppingCart(Pricer pricer, String branch) {
+		this.pricer = pricer;
+		this.receipt = new Receipt(branch);
+	}
 
-    public void printReceipt() {
-        Object[] keys = contents.keySet().toArray();
+	public void addItem(String itemType, int number) {
+		if(number>0) {
+			Float price = Float.valueOf(pricer.getPrice(itemType) * number);
+			Entry entry = new Entry(itemType, number, price);
+			cartContents.add(entry);
+		}
+	}
 
-        for (int i = 0; i < Array.getLength(keys) ; i++) {
-            Integer price = pricer.getPrice((String)keys[i]) * contents.get(keys[i]);
-            Float priceFloat = new Float(new Float(price) / 100);
-            String priceString = String.format("€%.2f", priceFloat);
-
-            System.out.println(keys[i] + " - " + contents.get(keys[i]) + " - " + priceString);
-        }
-    }
+	public void printReceipt() {
+		this.receipt.printAndSaveReceipt(this.cartContents);
+	}
 }
